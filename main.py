@@ -1,16 +1,9 @@
-# This is a sample Python script.
+import tkinter as tk
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from GUIs.controllers.a_star_controller import AStarController
+from GUIs.views.a_star_view import AStarView
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+root = tk.Tk()
+controller = AStarController()
+view = AStarView(root, controller)
+root.mainloop()
