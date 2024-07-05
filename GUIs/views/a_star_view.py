@@ -12,6 +12,7 @@ class AStarView:
         self.end_selected = False
         self.start_button = None
         self.create_widgets()
+        self.controller.set_view(self)
 
     def create_widgets(self):
         self.root.title("A* Pathfinding Visualizer")
@@ -44,3 +45,6 @@ class AStarView:
                 self.grid_buttons[elem.index_0][elem.index_1].configure(bg="yellow")
         else:
             messagebox.showinfo("No Path", "No path could be found between the selected nodes.")
+
+    def update_node_color(self, row, col, color):
+        self.grid_buttons[row][col].configure(bg=color)

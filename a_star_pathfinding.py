@@ -1,7 +1,7 @@
 import math
 
 
-class A_Star_Pathfinder:
+class AStarPathfinder:
 
     def __init__(self):
         self.nodes = None
@@ -9,6 +9,8 @@ class A_Star_Pathfinder:
         self.end_node = None
         self.open_list = []
         self.closed_list = []
+        self.on_add_to_open_list = None
+        self.on_select_next_node = None
 
     def create_nodes(self):
         rows, cols = 10, 10
@@ -27,32 +29,41 @@ class A_Star_Pathfinder:
         self.start_node.g = 0
         self.start_node.h = self.start_node.calculate_h(self.end_node.index_0, self.end_node.index_1)
         self.start_node.f = self.start_node.g + self.start_node.h
+        self.start_node.parent_node = None
+        if self.on_add_to_open_list:
+            self.on_add_to_open_list(self.start_node)
 
     def find_best_path(self):
-
-        while True:
-
-            next_node = A_Star_Pathfinder.find_node_with_min_f(self.open_list)
+        while self.open_list:
+            next_node = AStarPathfinder.find_node_with_min_f(self.open_list)
 
             if next_node == self.end_node:
-                best_path = A_Star_Pathfinder.reconstruct_best_path(next_node)
+                best_path = AStarPathfinder.reconstruct_best_path(next_node)
                 return best_path
+
+            if self.on_select_next_node:
+                self.on_select_next_node(next_node)
 
             self.closed_list.append(next_node)
             self.open_list.remove(next_node)
 
             neighbors = self.find_neighbors(next_node)
 
-            for neighbour in neighbors:
-                if neighbour in self.closed_list:
+            for neighbor in neighbors:
+                if neighbor in self.closed_list:
                     continue
-                tentative_g = A_Star_Pathfinder.calculate_tentative_g(next_node, neighbour)
-                if neighbour not in self.open_list:
-                    self.open_list.append(neighbour)
-                    neighbour.update_values(tentative_g, next_node)
-                    neighbour.parent_node = next_node
-                elif tentative_g < neighbour.g:
-                    neighbour.update_values(tentative_g, next_node)
+                tentative_g = AStarPathfinder.calculate_tentative_g(next_node, neighbor)
+                if neighbor not in self.open_list:
+                    self.open_list.append(neighbor)
+                    neighbor.update_values(tentative_g, self.end_node)
+                    neighbor.parent_node = next_node
+                    if self.on_add_to_open_list:
+                        self.on_add_to_open_list(neighbor)
+                elif tentative_g < neighbor.g:
+                    neighbor.update_values(tentative_g, self.end_node)
+                    neighbor.parent_node = next_node
+
+        return None  # If no path is found
 
     @staticmethod
     def reconstruct_best_path(node):
@@ -61,6 +72,8 @@ class A_Star_Pathfinder:
         while current_node.parent_node is not None:
             best_path.append(current_node)
             current_node = current_node.parent_node
+        for elem in best_path:
+            print(str(elem.index_0) + ", " + str(elem.index_1))
         return best_path
 
     def find_neighbors(self, node):
