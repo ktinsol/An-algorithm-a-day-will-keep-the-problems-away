@@ -28,6 +28,7 @@ class AStarView:
         self.start_button.grid_remove()
 
     def on_node_click(self, row, col):
+        print(row, col)
         if not self.start_selected:
             self.controller.set_start_node(row, col)
             self.grid_buttons[row][col].configure(bg="green")

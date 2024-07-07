@@ -14,15 +14,19 @@ class AStarPathfinder:
 
     def create_nodes(self):
         rows, cols = 10, 10
-        self.nodes = [[Node(i, j) for i in range(cols)] for j in range(rows)]
+        self.nodes = [[Node(j, i) for i in range(rows)] for j in range(cols)]
 
+    # Could be reworked to start node = array
     def select_start_node(self, row, col):
-        self.start_node = Node(row, col)
-        self.nodes[row][col] = self.start_node
+        print(row, col)
+        self.start_node = self.nodes[row][col]
+        print(self.nodes[row][col].index_0, self.nodes[row][col].index_1)
+        # self.nodes[row][col] = self.start_node
 
     def select_end_node(self, row, col):
-        self.end_node = Node(row, col)
-        self.nodes[row][col] = self.end_node
+        print(row, col)
+        self.end_node = self.nodes[row][col]
+        # self.nodes[row][col] = self.end_node
 
     def init_the_algo(self):
         self.open_list.append(self.start_node)
@@ -32,38 +36,37 @@ class AStarPathfinder:
         self.start_node.parent_node = None
         if self.on_add_to_open_list:
             self.on_add_to_open_list(self.start_node)
+        print(self.start_node.index_0, self.start_node.index_1)
 
     def find_best_path(self):
         while self.open_list:
-            next_node = AStarPathfinder.find_node_with_min_f(self.open_list)
+            current_node = AStarPathfinder.find_node_with_min_f(self.open_list)
 
-            if next_node == self.end_node:
-                best_path = AStarPathfinder.reconstruct_best_path(next_node)
-                return best_path
+            if current_node == self.end_node:
+                return AStarPathfinder.reconstruct_best_path(current_node)
 
             if self.on_select_next_node:
-                self.on_select_next_node(next_node)
+                self.on_select_next_node(current_node)
 
-            self.closed_list.append(next_node)
-            self.open_list.remove(next_node)
+            self.closed_list.append(current_node)
+            self.open_list.remove(current_node)
 
-            neighbors = self.find_neighbors(next_node)
-
+            neighbors = self.find_neighbors(current_node)
             for neighbor in neighbors:
                 if neighbor in self.closed_list:
                     continue
-                tentative_g = AStarPathfinder.calculate_tentative_g(next_node, neighbor)
+                tentative_g = AStarPathfinder.calculate_tentative_g(current_node, neighbor)
                 if neighbor not in self.open_list:
                     self.open_list.append(neighbor)
                     neighbor.update_values(tentative_g, self.end_node)
-                    neighbor.parent_node = next_node
+                    neighbor.parent_node = current_node
                     if self.on_add_to_open_list:
                         self.on_add_to_open_list(neighbor)
-                elif tentative_g < neighbor.g:
+                elif neighbor in self.open_list and tentative_g < neighbor.g:
                     neighbor.update_values(tentative_g, self.end_node)
-                    neighbor.parent_node = next_node
+                    neighbor.parent_node = current_node
 
-        return None  # If no path is found
+        return None
 
     @staticmethod
     def reconstruct_best_path(node):
@@ -72,6 +75,8 @@ class AStarPathfinder:
         while current_node.parent_node is not None:
             best_path.append(current_node)
             current_node = current_node.parent_node
+        if current_node.parent_node is None:
+            best_path.append(current_node)
         for elem in best_path:
             print(str(elem.index_0) + ", " + str(elem.index_1))
         return best_path
@@ -98,6 +103,7 @@ class AStarPathfinder:
 
     @staticmethod
     def calculate_tentative_g(current_node, neighbor_node):
+        """
         # Calculate the tentative g cost from current_node to neighbor_node
         dx = abs(current_node.index_0 - neighbor_node.index_0)
         dy = abs(current_node.index_1 - neighbor_node.index_1)
@@ -105,6 +111,8 @@ class AStarPathfinder:
             return current_node.g + math.sqrt(2)
         else:  # Horizontal or vertical movement
             return current_node.g + 1
+        """
+        return current_node.g + 1
 
     @staticmethod
     def find_node_with_min_f(list_of_nodes):
@@ -126,6 +134,7 @@ class Node:
         self.h = 0
         self.f = 0
         self.parent_node = None
+        # print(self.index_0, self.index_1)
 
     def calculate_h(self, node_index_0, node_index_1):
         return abs(self.index_0 - node_index_0) + abs(self.index_1 - node_index_1)
@@ -137,4 +146,3 @@ class Node:
         self.g = g
         self.h = self.calculate_h(node.index_0, node.index_1)
         self.f = self.calculate_f()
-        self.parent_node = node
