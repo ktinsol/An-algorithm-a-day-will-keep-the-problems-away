@@ -4,7 +4,7 @@ import math
 class AStarPathfinder:
 
     def __init__(self):
-        self.nodes = None
+        self.grid = None
         self.start_node = None
         self.end_node = None
         self.open_list = []
@@ -12,21 +12,23 @@ class AStarPathfinder:
         self.on_add_to_open_list = None
         self.on_select_next_node = None
 
+    def set_grid(self, grid):
+        self.grid = grid
+
     def create_nodes(self):
         rows, cols = 10, 10
-        self.nodes = [[Node(j, i) for i in range(rows)] for j in range(cols)]
+        self.grid = [[Node(j, i) for i in range(rows)] for j in range(cols)]
 
     # Could be reworked to start node = array
     def select_start_node(self, row, col):
-        print(row, col)
-        self.start_node = self.nodes[row][col]
-        print(self.nodes[row][col].index_0, self.nodes[row][col].index_1)
-        # self.nodes[row][col] = self.start_node
+        print("Start: " + str(row) + ", " + str(col))
+        self.start_node = self.grid[row][col]
+        # self.grid[row][col] = self.start_node
 
     def select_end_node(self, row, col):
-        print(row, col)
-        self.end_node = self.nodes[row][col]
-        # self.nodes[row][col] = self.end_node
+        print("Start: " + str(row) + ", " + str(col))
+        self.end_node = self.grid[row][col]
+        # self.grid[row][col] = self.end_node
 
     def init_the_algo(self):
         self.open_list.append(self.start_node)
@@ -36,13 +38,14 @@ class AStarPathfinder:
         self.start_node.parent_node = None
         if self.on_add_to_open_list:
             self.on_add_to_open_list(self.start_node)
-        print(self.start_node.index_0, self.start_node.index_1)
 
     def find_best_path(self):
         while self.open_list:
             current_node = AStarPathfinder.find_node_with_min_f(self.open_list)
 
+            print(str(current_node.index_0) + ", " + str(current_node.index_1))
             if current_node == self.end_node:
+                print("Hello")
                 return AStarPathfinder.reconstruct_best_path(current_node)
 
             if self.on_select_next_node:
@@ -77,14 +80,12 @@ class AStarPathfinder:
             current_node = current_node.parent_node
         if current_node.parent_node is None:
             best_path.append(current_node)
-        for elem in best_path:
-            print(str(elem.index_0) + ", " + str(elem.index_1))
         return best_path
 
     def find_neighbors(self, node):
         neighbors = []
         row, col = node.index_0, node.index_1
-        rows, cols = len(self.nodes), len(self.nodes[0])
+        rows, cols = len(self.grid), len(self.grid[0])
 
         # Define all 8 possible movements (including diagonals)
         directions = [
@@ -97,7 +98,8 @@ class AStarPathfinder:
         for dr, dc in directions:
             nr, nc = row + dr, col + dc
             if 0 <= nr < rows and 0 <= nc < cols:  # Check if within bounds
-                neighbors.append(self.nodes[nr][nc])
+                if self.grid[nr][nc].is_wall is False:
+                    neighbors.append(self.grid[nr][nc])
 
         return neighbors
 
@@ -134,6 +136,9 @@ class Node:
         self.h = 0
         self.f = 0
         self.parent_node = None
+        self.is_start = False
+        self.is_end = False
+        self.is_wall = False
         # print(self.index_0, self.index_1)
 
     def calculate_h(self, node_index_0, node_index_1):

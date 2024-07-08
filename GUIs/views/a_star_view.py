@@ -28,7 +28,6 @@ class AStarView:
         self.start_button.grid_remove()
 
     def on_node_click(self, row, col):
-        print(row, col)
         if not self.start_selected:
             self.controller.set_start_node(row, col)
             self.grid_buttons[row][col].configure(bg="green")
@@ -38,6 +37,9 @@ class AStarView:
             self.grid_buttons[row][col].configure(bg="red")
             self.end_selected = True
             self.start_button.grid()
+        else:
+            self.controller.set_wall_node(row, col)
+            self.grid_buttons[row][col].configure(bg="grey")
 
     def start_algorithm(self):
         best_path = self.controller.start_algorithm()
