@@ -26,7 +26,6 @@ class AStarPathfinder:
         # self.grid[row][col] = self.start_node
 
     def select_end_node(self, row, col):
-        print("Start: " + str(row) + ", " + str(col))
         self.end_node = self.grid[row][col]
         # self.grid[row][col] = self.end_node
 

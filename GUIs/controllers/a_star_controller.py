@@ -5,7 +5,7 @@ from a_star_pathfinding import Node
 class AStarController:
 
     def __init__(self):
-        self.grid = [[Node(row, col) for col in range(10)] for row in range(10)]
+        self.grid = [[Node(row, col) for col in range(25)] for row in range(25)]
         self.pathfinder = AStarPathfinder()
         self.pathfinder.set_grid(self.grid)
         # self.pathfinder.create_nodes()
