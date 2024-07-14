@@ -1,2 +1,5 @@
 class DFSView:
-    pass
+
+    def __init__(self, root, controller):
+        self.__root = root
+        self.__controller = controller

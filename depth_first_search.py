@@ -1,14 +1,14 @@
 class DFS:
     def __init__(self):
-        self.input = None
-        self.search_value = None
-        self.visited = []
+        self.__input = None
+        self.__search_value = None
+        self.__visited = []
 
     def set_input(self, input):
-        self.input = input
+        self.__input = input
 
     def set_search_value(self, value):
-        self.search_value = value
+        self.__search_value = value
 
     def run_algorithm(self):
 
@@ -16,12 +16,12 @@ class DFS:
         root = None
 
         # Run the algorithm based on the root node and return the value
-        return self.dfs_algorithm(root)
+        return self.algorithm_loop(root)
 
-    def dfs_algorithm(self, node):
+    def algorithm_loop(self, node):
 
         # Check if search value == current node
-        if self.search_value == node.value:
+        if self.__search_value == node.value:
             return node
 
         # Find neighbors of the current node which have not yet been visited
@@ -29,7 +29,7 @@ class DFS:
 
         # For each neighbor run the dfs algorithm
         for neighbor in neighbors:
-            self.dfs_algorithm(neighbor)
+            self.algorithm_loop(neighbor)
 
         return None
 
