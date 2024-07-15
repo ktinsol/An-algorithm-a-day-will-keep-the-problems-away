@@ -16,6 +16,9 @@ class Tree:
     def get_root_node(self):
         return self.__root_node
 
+    def get_nodes(self):
+        return self.__nodes
+
 
 class Node:
 
@@ -31,7 +34,7 @@ class Node:
         self.__parent_nodes.append(node)
 
     def get_child_nodes(self):
-        return self.get_child_nodes()
+        return self.__child_nodes
 
     def get_parent_nodes(self):
         return self.get_parent_nodes()
@@ -69,10 +72,13 @@ class TreeBuilder:
         tree = Tree()
         # Create root node
         root_node = TreeBuilder.create_node()
-        # Connect root node and tree object
-        tree.set_root_node(root_node)
         # Create tree recursively
-        tree.add_node(TreeBuilder.recursive_build_tree(0, depth, width, tree.get_root_node()))
+        tree.set_root_node(TreeBuilder.recursive_build_tree(0, depth, width, root_node))
+        print(tree.get_root_node())
+        # Build the tree based on the returned node with its children
+        tree.nodes = TreeBuilder.construct_tree(tree.get_root_node())
+        # Return the tree object as output
+        return tree
         
     @staticmethod
     def recursive_build_tree(depth, limit, width, parent):
@@ -80,10 +86,13 @@ class TreeBuilder:
             return None
         else:
             for i in range(width):
-                node = TreeBuilder.create_node_randomly()
-                node.add_parent_node(parent)
-                node.add_child_node(TreeBuilder.recursive_build_tree(depth+1,limit,width, node))
-                return node
+                child_node = TreeBuilder.create_node_randomly()
+                if child_node is None:
+                    continue
+                child_node.add_parent_node(parent)
+                parent.add_child_node(TreeBuilder.recursive_build_tree(depth+1, limit, width, child_node))
+            return parent
+
     @staticmethod
     def create_node_randomly():
         random_int = random.randint(0, 3)
@@ -104,5 +113,21 @@ class TreeBuilder:
 
     @staticmethod
     def create_parent_and_child_relations(tree):
+        pass
 
+    @staticmethod
+    def construct_tree(root_node):
+        nodes = [root_node]
+        index = 0
+        current_node = root_node
+        while True:
+            for child_node in current_node.get_child_nodes():
+                if child_node is not None:
+                    nodes.append(child_node)
+            if index + 1 < len(nodes):
+                index += 1
+            else:
+                break
+            current_node = nodes[index]
+        return nodes
 
