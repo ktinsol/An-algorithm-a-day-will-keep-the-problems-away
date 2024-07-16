@@ -23,15 +23,18 @@ class DFSView:
             for node in level_nodes.pop(0):
                 x, y = self.node_positions[node]
                 child_count = len(node.get_child_nodes())
-                if child_count > 0:
+                if child_count > 0 and node.get_child_nodes() is not None:
                     x_gap = 800 // (child_count + 1)
                     for i, child in enumerate(node.get_child_nodes()):
-                        child_x = x - 400 + x_gap * (i + 1)
-                        child_y = y + y_gap
-                        self.node_positions[child] = (child_x, child_y)
-                        self._draw_node(child, child_x, child_y)
-                        self._draw_line(x, y, child_x, child_y)
-                        next_level_nodes.append(child)
+                        if child is not None:
+                            child_x = x - 400 + x_gap * (i + 1)
+                            child_y = y + y_gap
+                            self.node_positions[child] = (child_x, child_y)
+                            self._draw_node(child, child_x, child_y)
+                            self._draw_line(x, y, child_x, child_y)
+                            next_level_nodes.append(child)
+                        else:
+                            continue
             if next_level_nodes:
                 level_nodes.append(next_level_nodes)
 
@@ -41,4 +44,14 @@ class DFSView:
         self.canvas.create_text(x, y, text=node.get_value())
 
     def _draw_line(self, x1, y1, x2, y2):
-        self.canvas.create_line(x1, y1, x2, y2)
+        r = 20  # radius of the node circle
+
+        # Calculate the coordinates of the intersection points
+        len_ab = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        xa = x1 + r * (x2 - x1) / len_ab
+        ya = y1 + r * (y2 - y1) / len_ab
+        xb = x2 - r * (x2 - x1) / len_ab
+        yb = y2 - r * (y2 - y1) / len_ab
+
+        # Draw the line between the intersection points
+        self.canvas.create_line(xa, ya, xb, yb)

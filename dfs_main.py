@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from Datastructures.tree import TreeBuilder
 

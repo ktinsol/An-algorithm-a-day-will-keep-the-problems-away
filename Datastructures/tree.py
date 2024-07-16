@@ -19,6 +19,9 @@ class Tree:
     def get_nodes(self):
         return self.__nodes
 
+    def set_nodes(self, nodes):
+        self.__nodes = nodes
+
 
 class Node:
 
@@ -76,7 +79,11 @@ class TreeBuilder:
         tree.set_root_node(TreeBuilder.recursive_build_tree(0, depth, width, root_node))
         print(tree.get_root_node())
         # Build the tree based on the returned node with its children
-        tree.nodes = TreeBuilder.construct_tree(tree.get_root_node())
+        tree.set_nodes(TreeBuilder.construct_tree(tree.get_root_node()))
+        print(tree.get_nodes())
+        # Clean the tree of none values
+        tree.set_nodes(TreeBuilder.remove_none_values_from_tree(tree.get_nodes()))
+        print(tree.get_nodes())
         # Return the tree object as output
         return tree
         
@@ -91,12 +98,12 @@ class TreeBuilder:
                     continue
                 child_node.add_parent_node(parent)
                 parent.add_child_node(TreeBuilder.recursive_build_tree(depth+1, limit, width, child_node))
-            return parent
+            return child_node
 
     @staticmethod
     def create_node_randomly():
         random_int = random.randint(0, 3)
-        if random_int == 3:
+        if random_int >= 0:
             return TreeBuilder.create_node()
         else:
             return None
@@ -130,4 +137,9 @@ class TreeBuilder:
                 break
             current_node = nodes[index]
         return nodes
+
+    @staticmethod
+    def remove_none_values_from_tree(tree):
+        return [value for value in tree if value is not None]
+
 
