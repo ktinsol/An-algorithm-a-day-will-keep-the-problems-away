@@ -1,10 +1,7 @@
-import time
 import tkinter as tk
-from Datastructures.tree import TreeBuilder
+from DepthFirstSearch.interface.model.tree import TreeBuilder
 
-from GUIs.controllers.dfs_controller import DFSController
-from GUIs.views.dfs_view import DFSView
-from depth_first_search import DFS
+from DepthFirstSearch.interface.controllers.dfs_controller import DFSController
 
 root = tk.Tk()
 tree = TreeBuilder.build_tree_recursively(4, 5)

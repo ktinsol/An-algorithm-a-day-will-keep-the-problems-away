@@ -1,5 +1,5 @@
-from a_star_pathfinding import AStarPathfinder
-from a_star_pathfinding import Node
+from AStarPathfinding.a_star_pathfinding import AStarPathfinder
+from AStarPathfinding.a_star_pathfinding import Node
 
 
 class AStarController:

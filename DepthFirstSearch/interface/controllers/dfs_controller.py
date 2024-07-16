@@ -1,4 +1,4 @@
-from GUIs.views.dfs_view import DFSView
+from DepthFirstSearch.interface.views.dfs_view import DFSView
 
 
 class DFSController:
