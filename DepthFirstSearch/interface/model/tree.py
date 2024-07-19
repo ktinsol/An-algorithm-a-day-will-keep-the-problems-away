@@ -77,13 +77,10 @@ class TreeBuilder:
         root_node = TreeBuilder.create_node()
         # Create tree recursively
         tree.set_root_node(TreeBuilder.recursive_build_tree(0, depth, width, root_node))
-        print(tree.get_root_node())
         # Build the tree based on the returned node with its children
         tree.set_nodes(TreeBuilder.construct_tree(tree.get_root_node()))
-        print(tree.get_nodes())
         # Clean the tree of none values
         tree.set_nodes(TreeBuilder.remove_none_values_from_tree(tree.get_nodes()))
-        print(tree.get_nodes())
         # Return the tree object as output
         return tree
         
