@@ -38,7 +38,6 @@ class Tree:
             self.print_recursively(child_node)
 
 
-
 class Node:
 
     def __init__(self):
