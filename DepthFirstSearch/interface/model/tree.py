@@ -22,6 +22,22 @@ class Tree:
     def set_nodes(self, nodes):
         self.__nodes = nodes
 
+    def print_tree(self):
+        print(str(self.get_root_node().get_value()))
+        print(self.get_root_node())
+        node = self.get_root_node()
+        self.print_recursively(node)
+
+    def print_recursively(self, node):
+        if node is None:
+            return
+        if node.get_child_nodes() is None:
+            return print(str(node.get_value()))
+        for child_node in node.get_child_nodes():
+            print(str(node.get_value()))
+            self.print_recursively(child_node)
+
+
 
 class Node:
 
