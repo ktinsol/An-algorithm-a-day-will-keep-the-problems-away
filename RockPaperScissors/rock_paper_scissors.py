@@ -25,15 +25,25 @@ class RockPaperScissors:
 
     def update_population_position(self):
         for artifact in self.population:
-            movement = random.randint(0, 4)
+            movement = random.randint(0, 8)
             if movement == 0:
                 artifact.move_up()
             elif movement == 1:
                 artifact.move_right()
             elif movement == 2:
                 artifact.move_down()
-            else:
+            elif movement == 3:
                 artifact.move_left()
+            else:
+                if artifact.last_move == 0:
+                    artifact.move_up()
+                elif artifact.last_move == 1:
+                    artifact.move_right()
+                elif artifact.last_move == 2:
+                    artifact.move_down()
+                elif artifact.last_move == 3:
+                    artifact.move_left()
+
 
     def update_population(self):
         # Find all artifacts that share the same position
@@ -81,19 +91,24 @@ class Artifact:
         # 0 = Rock, 1 = Paper, 2 = Scissors
         self.type = random.randint(0, 3)
         self.position = [random.randint(5, 500-5), random.randint(5, 500-5)]
+        self.last_move = None
 
     def move_up(self):
         if self.position[1] >= 7:
-            self.position[1] -= 2
+            self.position[1] -= 3
+            self.last_move = 0
 
     def move_down(self):
         if self.position[1] <= 493:
-            self.position[1] += 2
+            self.position[1] += 3
+            self.last_move = 2
 
     def move_left(self):
         if self.position[0] >= 7:
-            self.position[0] -= 2
+            self.position[0] -= 3
+            self.last_move = 3
 
     def move_right(self):
         if self.position[0] <= 493:
-            self.position[0] += 2
+            self.position[0] += 3
+            self.last_move = 1

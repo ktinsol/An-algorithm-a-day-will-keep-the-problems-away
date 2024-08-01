@@ -2,6 +2,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import PIL
 
+
 class View:
     def __init__(self, root, width, height):
         self.root = root
@@ -28,6 +29,8 @@ class View:
         for artifact in artifacts:
             x, y = artifact.position
             color = self.get_color(artifact.type)
+            if color is None:
+                continue
             self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill=color)
 
             # Draw the corresponding image
