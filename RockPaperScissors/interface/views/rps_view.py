@@ -1,5 +1,6 @@
 import tkinter as tk
-
+from PIL import Image, ImageTk
+import PIL
 
 class View:
     def __init__(self, root, width, height):
@@ -17,12 +18,25 @@ class View:
 
         self.start_callback = None
 
+        # Load images
+        self.rock_image = ImageTk.PhotoImage(Image.open("data/rock.jpg").resize((20, 20), Image.LANCZOS))
+        self.paper_image = ImageTk.PhotoImage(Image.open("data/paper3.jpg").resize((20, 20), Image.LANCZOS))
+        self.scissors_image = ImageTk.PhotoImage(Image.open("data/scissors.jpg").resize((20, 20), Image.LANCZOS))
+
     def draw_artifacts(self, artifacts):
         self.canvas.delete("all")
         for artifact in artifacts:
             x, y = artifact.position
             color = self.get_color(artifact.type)
             self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill=color)
+
+            # Draw the corresponding image
+            if artifact.type == 0:
+                self.canvas.create_image(x, y, image=self.rock_image)
+            elif artifact.type == 1:
+                self.canvas.create_image(x, y, image=self.paper_image)
+            elif artifact.type == 2:
+                self.canvas.create_image(x, y, image=self.scissors_image)
 
     def get_color(self, artifact_type):
         if artifact_type == 0:

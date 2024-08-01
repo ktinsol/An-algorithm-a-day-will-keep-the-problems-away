@@ -7,7 +7,7 @@ from RockPaperScissors.rock_paper_scissors import RockPaperScissors, Artifact
 
 class Controller:
     def __init__(self, root):
-        self.view = View(root, 500, 500)
+        self.view = View(root, 600, 600)
         self.simulation = RockPaperScissors()
         self.simulation.generate_start_population()
         self.view.set_start_callback(self.run_simulation)

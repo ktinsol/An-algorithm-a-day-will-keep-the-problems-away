@@ -1,3 +1,4 @@
+import math
 import random
 
 
@@ -38,7 +39,8 @@ class RockPaperScissors:
         # Find all artifacts that share the same position
         for artifact in self.population:
             for other_artifact in self.population:
-                if artifact.position == other_artifact.position:
+                # detect collision
+                if RockPaperScissors.det_col(artifact, other_artifact):
                     if RockPaperScissors.rock_paper_scissors(artifact, other_artifact) == artifact:
                         self.population.remove(other_artifact)
                     elif RockPaperScissors.rock_paper_scissors(artifact, other_artifact) == other_artifact:
@@ -46,14 +48,28 @@ class RockPaperScissors:
                         break
 
     @staticmethod
+    def distance(x1, y1, x2, y2):
+        return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+    @staticmethod
+    def det_col(artifact_a, artifact_b):
+        x1 = artifact_a.position[0]
+        x2 = artifact_b.position[0]
+        y1 = artifact_a.position[1]
+        y2 = artifact_b.position[1]
+        r1 = 5
+        r2 = 5
+        return RockPaperScissors.distance(x1, y1, x2, y2) < (r1 + r2)
+
+    @staticmethod
     def rock_paper_scissors(artifact_a, artifact_b):
         if artifact_a.type == artifact_b.type:
             return None
-        elif artifact_a == 0 and artifact_b != 1:
+        elif artifact_a.type == 0 and artifact_b.type != 1:
             return artifact_a
-        elif artifact_a == 1 and artifact_b != 2:
+        elif artifact_a.type == 1 and artifact_b.type != 2:
             return artifact_a
-        elif artifact_a == 2 and artifact_b != 3:
+        elif artifact_a.type == 2 and artifact_b.type != 3:
             return artifact_a
         else:
             return artifact_b
@@ -67,13 +83,17 @@ class Artifact:
         self.position = [random.randint(5, 500-5), random.randint(5, 500-5)]
 
     def move_up(self):
-        self.position[1] -= 1
+        if self.position[1] >= 7:
+            self.position[1] -= 2
 
     def move_down(self):
-        self.position[1] += 1
+        if self.position[1] <= 493:
+            self.position[1] += 2
 
     def move_left(self):
-        self.position[0] -= 1
+        if self.position[0] >= 7:
+            self.position[0] -= 2
 
     def move_right(self):
-        self.position[0] += 1
+        if self.position[0] <= 493:
+            self.position[0] += 2
