@@ -67,8 +67,8 @@ class RockPaperScissors:
         x2 = artifact_b.position[0]
         y1 = artifact_a.position[1]
         y2 = artifact_b.position[1]
-        r1 = 5
-        r2 = 5
+        r1 = 10
+        r2 = 10
         return RockPaperScissors.distance(x1, y1, x2, y2) < (r1 + r2)
 
     @staticmethod
@@ -95,20 +95,20 @@ class Artifact:
 
     def move_up(self):
         if self.position[1] >= 7:
-            self.position[1] -= 3
+            self.position[1] -= 4
             self.last_move = 0
 
     def move_down(self):
         if self.position[1] <= 493:
-            self.position[1] += 3
+            self.position[1] += 4
             self.last_move = 2
 
     def move_left(self):
         if self.position[0] >= 7:
-            self.position[0] -= 3
+            self.position[0] -= 4
             self.last_move = 3
 
     def move_right(self):
         if self.position[0] <= 493:
-            self.position[0] += 3
+            self.position[0] += 4
             self.last_move = 1

@@ -109,7 +109,9 @@ class TreeBuilder:
                 if child_node is None:
                     continue
                 child_node.add_parent_node(parent)
-                parent.add_child_node(TreeBuilder.recursive_build_tree(depth+1, limit, width, child_node))
+                parent.add_child_node(child_node)
+                # parent.add_child_node(TreeBuilder.recursive_build_tree(depth+1, limit, width, child_node))
+                child_node.add_child_node(TreeBuilder.recursive_build_tree(depth + 1, limit, width, child_node))
             return child_node
 
     @staticmethod

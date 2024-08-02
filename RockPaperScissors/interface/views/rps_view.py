@@ -8,7 +8,7 @@ class View:
         self.root = root
         self.width = width
         self.height = height
-        self.canvas = tk.Canvas(root, width=width, height=height)
+        self.canvas = tk.Canvas(root, bg="white", width=width, height=height)
         self.canvas.pack()
 
         self.menu_bar = tk.Frame(root, height=30)
