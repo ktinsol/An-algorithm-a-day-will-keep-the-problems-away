@@ -23,6 +23,8 @@ class Tree:
         self.__nodes = nodes
 
     def print_tree(self):
+        if self.get_root_node() is None:
+            print("No tree")
         print(str(self.get_root_node().get_value()))
         print(self.get_root_node())
         node = self.get_root_node()
@@ -105,7 +107,7 @@ class TreeBuilder:
             return None
         else:
             for i in range(width):
-                child_node = TreeBuilder.create_node_randomly()
+                child_node = TreeBuilder.create_node_randomly(depth)
                 if child_node is None:
                     continue
                 child_node.add_parent_node(parent)
@@ -115,9 +117,9 @@ class TreeBuilder:
             return child_node
 
     @staticmethod
-    def create_node_randomly():
-        random_int = random.randint(0, 3)
-        if random_int >= 0:
+    def create_node_randomly(level):
+        random_int = random.randint(0, level+1)
+        if random_int <= 1:
             return TreeBuilder.create_node()
         else:
             return None
@@ -141,7 +143,7 @@ class TreeBuilder:
         nodes = [root_node]
         index = 0
         current_node = root_node
-        while True:
+        while current_node:
             for child_node in current_node.get_child_nodes():
                 if child_node is not None:
                     nodes.append(child_node)
