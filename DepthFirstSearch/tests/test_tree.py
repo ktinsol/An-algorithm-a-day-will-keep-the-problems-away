@@ -73,5 +73,6 @@ class TestTreeStructure(unittest.TestCase):
         self.assertEqual(len(filtered_nodes), 3)
         self.assertNotIn(None, filtered_nodes)
 
+
 if __name__ == '__main__':
     unittest.main()

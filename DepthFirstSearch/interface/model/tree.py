@@ -40,10 +40,11 @@ class Tree:
                 continue
             for parent_node in current_node.get_parent_nodes():
                 if parent_node is not None:
-                    parent_node_value += str(current_node.get_parent_nodes()[0].get_value())
+                    parent_node_value += str(hex(id(parent_node)))
                 else:
                     parent_node_value = ""
-            output_string += " " + str(current_node.get_value()) + "(" + parent_node_value + ")"
+            # output_string += " " + str(current_node.get_value()) + "(" + parent_node_value + ")"
+            output_string += " " + str(hex(id(current_node))) + "(" + parent_node_value + ")"
             if current_node.get_child_nodes() is None:
                 continue
             for child in current_node.get_child_nodes():

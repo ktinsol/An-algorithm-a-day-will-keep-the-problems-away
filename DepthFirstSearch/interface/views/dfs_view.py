@@ -23,8 +23,6 @@ class DFSView:
 
     def draw_tree(self):
         root = self.tree.get_root_node()
-        if not root:
-            return
 
         level_nodes = [[root]]
         self.node_positions[id(root)] = (self.width // 2, 50)
@@ -34,8 +32,9 @@ class DFSView:
         max_width = 0
         while level_nodes:
             next_level_nodes = []
-            for node in level_nodes.pop(0):
+            for j, node in enumerate(level_nodes.pop(0)):
                 x, y = self.node_positions[id(node)]
+                x += j * 30
                 child_count = len(node.get_child_nodes())
                 if child_count > 0:
                     x_gap = min(self.width // (child_count + 1), 200)
@@ -97,3 +96,5 @@ class DFSView:
     def exit_fullscreen(self, event=None):
         self.master.attributes('-fullscreen', False)
         self.master.geometry(f"{self.width}x{self.height}")
+        self.master.quit()  # Properly end the Tkinter event loop
+        self.master.destroy()  # Destroy the window
