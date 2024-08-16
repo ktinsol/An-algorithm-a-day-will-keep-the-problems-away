@@ -25,7 +25,7 @@ class Tree:
 
     def print_tree(self):
         if self.get_root_node() is None:
-            print("No tree")
+            return None
         stack = [self.get_root_node()]
         self.print_recursively(len(stack), stack)
 
